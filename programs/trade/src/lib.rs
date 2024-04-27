@@ -20,6 +20,10 @@ pub mod trade {
     pub fn deposit_sol_vault(ctx: Context<DepositSolVault>, amount: u64) -> Result<()> {
         instructions::deposit_sol_vault(ctx, amount)
     }
+
+    pub fn deposit_usdc_vault(ctx: Context<DepositUsdcVault>, amount: u64) -> Result<()> {
+        instructions::deposit_usdc_vault(ctx, amount)
+    }
 }
 
 

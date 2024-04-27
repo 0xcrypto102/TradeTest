@@ -33,6 +33,8 @@ pub fn deposit_sol_vault(ctx: Context<DepositSolVault>, amount: u64) -> Result<(
 
     require!(accts.global_state.owner == accts.owner.key(), TradeError::NotAllowedOwner);
 
+    require!(amount > 0, TradeError::ZeroAmount);
+
     // depost amount sol to the vault
     invoke(
         &system_instruction::transfer(
@@ -55,6 +57,40 @@ pub fn deposit_sol_vault(ctx: Context<DepositSolVault>, amount: u64) -> Result<(
         owner: accts.global_state.owner,
         deposit_amount: amount,
         current_balance:  accts.global_state.sol_balance
+    });
+
+    Ok(())
+}
+
+pub fn deposit_usdc_vault(ctx: Context<DepositUsdcVault>, amount: u64) -> Result<()> {
+    let accts = ctx.accounts;
+
+    require!(accts.global_state.owner == accts.owner.key(), TradeError::NotAllowedOwner);
+
+    require!(accts.token_mint.key() == accts.global_state.usdc_token_address, TradeError::InvalidTokenAddress);
+
+    require!(amount > 0, TradeError::ZeroAmount);
+
+    // owner deposits USDC to vault account
+  
+    let cpi_ctx = CpiContext::new(
+        accts.token_program.to_account_info(),
+        Transfer {
+            from: accts.token_owner_account.to_account_info().clone(),
+            to: accts.token_vault_account.to_account_info().clone(),
+            authority: accts.owner.to_account_info().clone(),
+        },
+    );
+    transfer(cpi_ctx, amount)?;
+
+    // update the usdc balance of vault in global state
+    accts.global_state.usdc_balance += amount;
+
+    // Emitting the deposit sol  event
+    emit!(DepositUSDCVaultEvent {
+        owner: accts.global_state.owner,
+        deposit_amount: amount,
+        current_balance:  accts.global_state.usdc_balance
     });
 
     Ok(())
@@ -119,4 +155,30 @@ pub struct DepositSolVault<'info> {
     pub vault: AccountInfo<'info>,  // to receive SOL
 
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct DepositUsdcVault<'info> {
+    #[account(mut)]
+    pub owner: Signer<'info>,
+
+    #[account(
+        mut,
+        seeds = [GLOBAL_STATE_SEED],
+        bump,
+    )]
+    pub global_state: Account<'info, GlobalState>,
+
+    pub token_mint: Account<'info, Mint>,
+    #[account(
+        mut,
+        address = global_state.token_vault
+    )]
+    token_vault_account: Account<'info, TokenAccount>,
+
+    #[account(mut)]
+    token_owner_account: Account<'info, TokenAccount>,
+
+    pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
 }

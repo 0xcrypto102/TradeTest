@@ -16,3 +16,11 @@ pub struct DepositSolVaultEvent {
     pub deposit_amount: u64,
     pub current_balance: u64
 }
+
+#[event]
+pub struct DepositUSDCVaultEvent {
+    #[index]
+    pub owner: Pubkey,
+    pub deposit_amount: u64,
+    pub current_balance: u64
+}
