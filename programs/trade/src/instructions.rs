@@ -113,7 +113,7 @@ pub fn buy_usdc_with_sol(ctx: Context<UserTrade>, amount: u64) -> Result<()> {
     let sol_price = u64::try_from(current_sol_price.price).unwrap();
     let sol_price_expo = 10u64.pow(u32::try_from(-current_sol_price.expo).unwrap());
 
-    let usdc_amount = 10000_u64 * amount / sol_price_expo * sol_price / 10000_u64;
+    let usdc_amount = 10000_u64 * amount / sol_price_expo * sol_price  / 10000_u64 * 10u64.pow(u32::try_from(accts.token_mint.decimals).unwrap()) / 1000000000_u64;
 
     require!(accts.global_state.usdc_balance > usdc_amount, TradeError::Insufficientfund);
 
@@ -159,6 +159,7 @@ pub fn buy_usdc_with_sol(ctx: Context<UserTrade>, amount: u64) -> Result<()> {
 
     emit!(TradeUSDCWithSolEvent {
         user: accts.user.key(),
+        sol_price: sol_price / sol_price_expo,
         deposit_sol_amount: amount,
         withdraw_token_amount:  usdc_amount,
     });
@@ -183,7 +184,7 @@ pub fn buy_sol_with_usdc(ctx: Context<UserTrade>, amount: u64) -> Result<()> {
     let sol_price = u64::try_from(current_sol_price.price).unwrap();
     let sol_price_expo = 10u64.pow(u32::try_from(-current_sol_price.expo).unwrap());
 
-    let sol_amount = 10000_u64 * amount / sol_price * sol_price_expo / 10000_u64;
+    let sol_amount = 10000_u64 * amount / sol_price * sol_price_expo * 100000_u64 / 10u64.pow(u32::try_from(accts.token_mint.decimals).unwrap());
 
     require!(accts.global_state.sol_balance > sol_amount, TradeError::Insufficientfund);
 
@@ -217,6 +218,7 @@ pub fn buy_sol_with_usdc(ctx: Context<UserTrade>, amount: u64) -> Result<()> {
 
     emit!(TradeSolWithUSDCEvent {
         user: accts.user.key(),
+        sol_price: sol_price / sol_price_expo,
         deposit_usdc_amount: amount,
         withdraw_sol_amount:  sol_amount,
     });

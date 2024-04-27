@@ -29,6 +29,7 @@ pub struct DepositUSDCVaultEvent {
 pub struct TradeUSDCWithSolEvent {
     #[index]
     pub user: Pubkey,
+    pub sol_price: u64,
     pub deposit_sol_amount: u64,
     pub withdraw_token_amount: u64,
 }
@@ -37,6 +38,7 @@ pub struct TradeUSDCWithSolEvent {
 pub struct TradeSolWithUSDCEvent {
     #[index]
     pub user: Pubkey,
+    pub sol_price: u64,
     pub deposit_usdc_amount: u64,
     pub withdraw_sol_amount: u64
 }

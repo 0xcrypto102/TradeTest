@@ -7,7 +7,7 @@ pub mod instructions;
 pub mod state;
 use instructions::*;
 
-declare_id!("CxHzmPBWHnpb5sFYcTde88DMEym63dybWMTH6smu3tkN");
+declare_id!("9oMiubwDBuNVDgawJM2Fww3pC18JyjkQybioQszksmiF");
 
 #[program]
 pub mod trade {
