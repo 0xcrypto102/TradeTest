@@ -9,5 +9,14 @@ pub enum TradeError {
     InvalidTokenAddress,
 
     #[msg("Trade: Please deposit USDC more than 0")]
-    ZeroAmount
+    ZeroAmount,
+
+    #[msg("Trade: This pubkey is invalid price feed")]
+    InvalidPriceFeed,
+
+    #[msg("Trade: There isn't balance in vault")]
+    NoBalance,
+
+    #[msg("Trade: There are insufficient fund in vault")]
+    Insufficientfund,
 }
