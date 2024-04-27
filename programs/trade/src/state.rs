@@ -7,4 +7,6 @@ pub struct GlobalState {
     pub vault: Pubkey, // keep sol
     pub token_vault: Pubkey, // keep usdc token
     pub usdc_token_address: Pubkey,
+    pub sol_balance: u64, // track the amount of sol in vault
+    pub usdc_balance: u64 // track the amount of usdc in vault
 }

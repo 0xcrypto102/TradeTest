@@ -8,3 +8,11 @@ pub struct InitializeEvent {
     pub token_vault: Pubkey,
     pub usdc_token_address: Pubkey,
 }
+
+#[event]
+pub struct DepositSolVaultEvent {
+    #[index]
+    pub owner: Pubkey,
+    pub deposit_amount: u64,
+    pub current_balance: u64
+}
