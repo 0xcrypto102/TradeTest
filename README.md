@@ -12,7 +12,7 @@ Please make sure that you install the Solana/Anchor/Rust on your development env
 
 ## How to test
 
-      anchor run test
+    anchor run test
 
 ## Logic
 
