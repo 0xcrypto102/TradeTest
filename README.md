@@ -23,3 +23,7 @@ Please make sure that you install the Solana/Anchor/Rust on your development env
 - Deposit USDC to token vault by owner
 - Allow users to deposit SOL and withdraw USDC (based on SOL price from Pyth)
 - Allow users to deposit USDC and withdraw SOL (based on SOL price from Pyth)
+
+## How to get the token price in solana
+
+    https://www.quicknode.com/guides/solana-development/3rd-party-integrations/pyth-price-feeds
