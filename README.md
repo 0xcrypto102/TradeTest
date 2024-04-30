@@ -2,6 +2,8 @@
 
 Please make sure that you install the Solana/Anchor/Rust on your development environment
 
+    https://book.anchor-lang.com/getting_started/installation.html
+
 ## How to build
 
     anchor build
